@@ -16,7 +16,12 @@
   <tr><td><a href="http://csweb.cs.wfu.edu/~torgerse/Kokua/Irix_6.5.21_doc_cd/usr/share/Insight/library/SGI_bookshelves/SGI_Developer/books/XLib_WinSys/sgi_html/index.html">Volume Four: X Toolkit Intrinsics Programming Manual</a></td></tr>
   <tr><td><a href="http://csweb.cs.wfu.edu/~torgerse/Kokua/Irix_6.5.21_doc_cd/usr/share/Insight/library/SGI_bookshelves/SGI_Developer/books/OpenGL_PG/sgi_html/index.html">OpenGL Programming Guide</a></td></tr>
   <tr><td><a href="http://csweb.cs.wfu.edu/~torgerse/Kokua/Irix_6.5.21_doc_cd/usr/share/Insight/library/SGI_bookshelves/SGI_Developer/books/IIDsktp_IG/sgi_html/index.html">IRIX Interactive Desktop Integration Guide</a></td></tr>
+  <tr><td><a href="https://en.cppreference.com/w/">C++/C reference</a></td></tr>
 </table>
+
+
+
+
 
   <!--
   <tr><td><a href=""></a></td></tr>
