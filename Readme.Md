@@ -18,6 +18,7 @@
   <tr><td><a href="http://csweb.cs.wfu.edu/~torgerse/Kokua/Irix_6.5.21_doc_cd/usr/share/Insight/library/SGI_bookshelves/SGI_Developer/books/IIDsktp_IG/sgi_html/index.html">IRIX Interactive Desktop Integration Guide</a></td></tr>
   <tr><td><a href="https://en.cppreference.com/w/">C++/C reference</a></td></tr>
   <tr><td><a href="https://www.keithp.com/~keithp/render/Xft.tutorial">Xft Tutorial</a></td></tr>
+  <tr><td><a href="https://github.com/DamianReloaded/LinuxProgramming">Linux Programming</a></td></tr>
 </table>
 
 
