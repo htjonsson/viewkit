@@ -2,21 +2,28 @@
 
 using namespace std;
 
-VkTabPanel::VkTabPanel(char* name, Widget parent, Boolean horizOrientation, int tabHeight)
-: VkComponent(name)
-{
-    _parent = parent;
-    _horizOrientation = horizOrientation;
+/*
+XtResource 
+VkTabPanel::_resources [] = {
+    // *tabs*tabHeight
+};
+*/
 
-    if(tabHeight > 30)
-        _tabHeight = tabHeight;
+VkTabPanel::VkTabPanel(char* name, Widget parent, Boolean horizOrientation, int tabHeight)
+:   VkComponent(name),
+    _horizOrientation(horizOrientation)
+{
+    // https://motif.ics.com/support/docs/viewkit-programmers-guide/component-resource-support
+
+    _tabHeight = tabHeight;
+
+    _margin = 5;
+    _margin1 = 5;
+    _margin2 = 5;
+    _sideOffset = 17;
+    _fontName = "-*-helvetica-bold-r-*-*-12-*-*-*-*-*-*-*";
 
     createWidget(parent);
-
-    _topMargin = 5;
-    _bottomMargin = 5;
-    _rightMargin = 5;
-    _leftMargin = 5; 
 }
 
 VkTabPanel::~VkTabPanel()
@@ -195,7 +202,8 @@ VkTabPanel::preDraw(Display* display)
 
     // Get font information
     XFontStruct *fontInfo = NULL;
-    string fontName("-*-helvetica-bold-r-*-*-12-*-*-*-*-*-*-*");
+    //string fontName("-*-helvetica-bold-r-*-*-12-*-*-*-*-*-*-*");
+    string fontName(_fontName);
 
     if(!(fontInfo = XLoadQueryFont(display, fontName.c_str())))
     {
@@ -291,8 +299,8 @@ VkTabPanel::drawRightmostTab(Display* display, Window window, int x, int y, int 
 
     for(int i = 0; i < extra; i++)
     {
-        x = x + _spacing;
-        XDrawLine(display, window, _gc, x - _spacing, y + h -1, x, y + h - 1);
+        x = x + _sideOffset;
+        XDrawLine(display, window, _gc, x - _sideOffset, y + h -1, x, y + h - 1);
         XDrawLine(display, window, _gc, x, y + h - 1, x + w, y);
     }
 }
@@ -358,7 +366,7 @@ VkTabPanel::drawCenterTab(Display* display, Window window, int x, int y, int w, 
 void
 VkTabPanel::draw()
 {
-    int x = 4 + _spacing + 60;
+    int x = 4 + _sideOffset + 60;
     int y = 4;
 
     // Get attributes of screen
@@ -389,7 +397,7 @@ VkTabPanel::draw()
             bg = _tabBg;
         
         if(i == 0)
-            drawLeftmostTab(display, window, x - _spacing, y, _spacing, height, bg);
+            drawLeftmostTab(display, window, x - _sideOffset, y, _sideOffset, height, bg);
 
         // get the hit box    
         item->box(x, x + widthWithMargins(item->textWidth()), y, y + heightWithMargins(_textHeight));
@@ -400,22 +408,21 @@ VkTabPanel::draw()
 
         if((int)i == _selectedTab)    
         {
-            drawLeftmostTab(display, window, x - _spacing - widthWithMargins(item->textWidth()), y, _spacing, height, _labelBg);     
+            drawLeftmostTab(display, window, x - _sideOffset - widthWithMargins(item->textWidth()), y, _sideOffset, height, _labelBg);     
             if(i != _items.size() - 1)
-                drawCenterTab(display, window, x, y, _spacing, height);
-            drawRightmostTab(display, window, x, y, _spacing, height, _labelBg, 0);
+                drawCenterTab(display, window, x, y, _sideOffset, height);
+            drawRightmostTab(display, window, x, y, _sideOffset, height, _labelBg, 0);
         }
         else
         {
             if(i == _items.size() - 1)
-                drawRightmostTab(display, window, x, y, _spacing, height, bg, 0);
+                drawRightmostTab(display, window, x, y, _sideOffset, height, bg, 0);
             else
-                drawCenterTab(display, window, x, y, _spacing, height);
+                drawCenterTab(display, window, x, y, _sideOffset, height);
         }
         
-        x += _spacing;
+        x += _sideOffset;
     }
-    XFlush(display);
 }
     
 void 
@@ -432,8 +439,8 @@ VkTabPanel::drawText(Display* display, Window window, GC _gc, int x, int y, Pixe
 
     w = item->textWidth();
     h = _textHeight;
-    x = x + _leftMargin;
-    y = y + h + _topMargin;
+    x = x + _margin1;
+    y = y + h + _margin1;
 
     cout << "drawText " << " x: " << x << " y: " << y << " width: " << w << " height: " << h << endl;
 
@@ -445,13 +452,13 @@ VkTabPanel::drawText(Display* display, Window window, GC _gc, int x, int y, Pixe
 int
 VkTabPanel::heightWithMargins(int height)
 {
-    return _topMargin + height + _bottomMargin;
+    return _margin1 + height + _margin2;
 }
 
 int
 VkTabPanel::widthWithMargins(int width)
 {
-    return _leftMargin + width + _rightMargin;
+    return _margin1 + width + _margin2;
 }
 
 void 
@@ -459,8 +466,8 @@ VkTabPanel::createWidget(Widget parent)
 {
     _baseWidget = XtVaCreateManagedWidget("tabs",
         xmDrawingAreaWidgetClass, parent,
-        XmNwidth,  1920,
-        XmNheight, 30,
+        XmNwidth,  600,
+        XmNheight, _tabHeight,
         NULL);   
 
     // Get the attributes of the screen
