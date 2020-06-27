@@ -20,45 +20,14 @@ int main ( int argc, char **argv )
         "*xft.fontName : helvetica",
         "*xft.fontSize : 12",
         "*xft.fontStyle : regular",
-		"*XmText.marginWidth : 2",
-		"*XmText.marginHeight : 2",
-		"*XmTextField.marginWidth : 2",
-		"*XmTextField.marginHeight : 1",
-		"*highlightThickness : 1",
-		"*shadowThickness : 1",
-		"*XmSeparator.shadowThickness : 2",
-		"*XmSeparatorGadget.shadowThickness : 2",
-		"*XmForm.shadowThickness : 0",
-		"*XmToggleButton.shadowThickness : 0",
-		"*XmToggleButton.detailShadowThickness : 1",
-		"*XmToggleButtonGadget.shadowThickness : 0",
-		"*XmToggleButtonGadget.detailShadowThickness : 1",
-		"*edit.labelString: Edit",
-		"*edit.mnemonic: E",
-		"*Undo.labelString: Undo",
-		"*Undo.mnemonic: U",
-		"*Undo.accelerator: Ctrl<Key>z",
-		"*Undo.acceleratorText: ^Z",
-		"*application.labelString: Application",
-		"*application.mnemonic: A",
-		"*lists.labelString: Lists",
-		"*lists.mnemonic: L",
-		"*busy.labelString: Busy",
-		"*busy.mnemonic: B",
-		"*dialogs.labelString: Dialogs",
-		"*dialogs.mnemonic: D",
-		"*preferences.labelString: Preferences",
-		"*preferences.mnemonic: P",
-		"*alignment.labelString: Alignment",
-		"*alignment.mnemonic: i",
 		NULL,
 	};
 
-    VkApp* app = new VkApp("MyApp", &argc, argv);
+    VkApp* app = new VkApp("TabPanelApp", &argc, argv);
     // Application-specific code
     app->setDefaultResources(app->baseWidget(), defaultResources);
 
-    VkSimpleWindow* win = new VkSimpleWindow("MyWindow");
+    VkSimpleWindow* win = new VkSimpleWindow("TabPanel Example");
 
     VkTabPanel* tab = new VkTabPanel((char*)std::string("tab").c_str(), win->mainWindowWidget());
 

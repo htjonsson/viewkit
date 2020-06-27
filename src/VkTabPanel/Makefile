@@ -1,24 +1,41 @@
-VKDIR   = ../../ViewKit
-INCDIRS = -I${VKDIR}  -I/usr/X11R6/include
-LIBDIRS = -L${VKDIR}/lib -L/usr/X11R6/lib
-LIBS    = -lvk -lvkhelp -lvk -lXpm -lXmu -lXm -lXt -lX11 -lstdc++
-CC	= gcc -O0 -g
-OBJS	= main.o VkTabPanel.o
-LIBDEPS = ${VKDIR}/lib/libvk.a ${VKDIR}/lib/libvkhelp.a
-SRCS    = $(OBJS:.o=.cc)
-HDRS    = 	
+#
+#	https://www.partow.net/programming/makefile/index.html
+#
 
-all : vktabpanel
+CC       := gcc
+CCFLAGS  := -pedantic-errors -Wall -Wextra
+VK_DIR   := /samba/public/code/ViewKit
+LDFLAGS  := -L${VK_DIR}/lib -L/usr/X11R6/lib -lvk -lvkhelp -lXpm -lXmu -lXm -lXt -lX11 -lstdc++ ${VK_DIR}/lib/libvk.a ${VK_DIR}/lib/libvkhelp.a
+BUILD    := ./build
+OBJ_DIR  := $(BUILD)/objects
+APP_DIR  := $(BUILD)/apps
+TARGET   := program
+INCLUDE  := -I${VK_DIR} -I/usr/X11R6/include
+SRC      := $(wildcard *.cc) 
+OBJECTS  := $(SRC:%.cc=$(OBJ_DIR)/%.o)
 
-vktabpanel : ${OBJS} ${LIBDEPS}
-	${CC} $(OBJS) -Wall -o vktabpanel $(LIBDIRS) $(LIBS) $(EFENCE)
+all: build $(APP_DIR)/$(TARGET)
 
-main.o : main.cc
-	${CC} main.cc -c -Wall -o main.o $(INCDIRS)
+$(OBJ_DIR)/%.o: %.cc
+	@mkdir -p $(@D)
+	$(CC) $(CCFLAGS) $(INCLUDE) -c $< -o $@ $(LDFLAGS)
 
-VkTabPanel.o : VkTabPanel.C
-	${CC} VkTabPanel.C -c -Wall -o VkTabPanel.o $(INCDIRS)
+$(APP_DIR)/$(TARGET): $(OBJECTS)
+	@mkdir -p $(@D)
+	$(CC) $(CCFLAGS) -o $(APP_DIR)/$(TARGET) $^ $(LDFLAGS)
 
-clean :
-	-rm -f vktabpanel *.o core *~
+.PHONY: all build clean debug release
 
+build:
+	@mkdir -p $(APP_DIR)
+	@mkdir -p $(OBJ_DIR)
+
+debug: CCFLAGS += -DDEBUG -g
+debug: all
+
+release: CCFLAGS += -O2
+release: all
+
+clean:
+	-@rm -rvf $(OBJ_DIR)/*
+	-@rm -rvf $(APP_DIR)/*

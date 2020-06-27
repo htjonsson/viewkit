@@ -51,13 +51,15 @@ public:
 
 class VkTabPanel : public VkComponent {
 
+private:
+    static XtResource _resources[];
 /*
     Resource:
 
     *tabs*tabHeight:    30
 */
 private:
-    unsigned int _tabHeight = 30;    // *tabs*tabHeight
+    int _tabHeight;    // *tabs*tabHeight
 
     Widget _parent;
     Boolean _horizOrientation = TRUE;
@@ -67,26 +69,22 @@ private:
     Pixel _labelBg;
     Pixel _labelFg;
     Pixel _tabBg;
-    int _lineThickness;
     int _size;
     GC _gc;
-
-    int _spacing = 10;
 
 private:
     std::vector<std::string> _labels;
     std::vector<void*> _clientDatas;
+    std::vector<XRectangle> _hitBox;
+    std::vector<int> _textWidth;
+
     std::vector<VkTabPanelItem*> _items;
 
 private:
-    int _topMargin;
-    int _bottomMargin;
-    int _leftMargin;
-    int _rightMargin;
     int _textHeight;
 
 public:
-    VkTabPanel(char* name, Widget parent, Boolean horizOrientation = TRUE, int tabHeight = 0);
+    VkTabPanel(char* name, Widget parent, Boolean horizOrientation = TRUE, int tabHeight = 30);
     virtual ~VkTabPanel();
 
     static const char* const callback;
@@ -133,6 +131,48 @@ public:
     Pixel labelFg();
     Pixel labelBg();
     GC gc();
+
+private:
+    // X Resources Associated with the Tab Panel Component
+    // https://motif.ics.com/support/docs/viewkit-programmers-guide/tab-panel-component
+
+    // Additional height, expressed in pixels, added to margin between top and bottom of tab border and tab display area (default value 2).
+    int additionalMarginHeight;
+
+    // Additional width, expressed in pixels, added to margin between sides of tab border and the tab display area (default value 4).
+    int additionalMarginWidth;
+
+    // Background color of VkTabPanel component, shown in space around tabs.
+    Pixel background;
+
+    // Number of overlapped tab symbols displayed as an "end indicator" when there are more tabs in panel than can be displayed at one time (default value 3).
+    int endMultiplier;
+
+    // Space, expressed in pixels, between overlapped tab symbols in the "end indicator" (default value 9).
+    int endSpacing;
+
+    // Line thickness used when drawing the tab edges. Default value is 1. You can provide another value, but line thickness other than 1 might not render properly.
+    int _lineThickness;
+
+    // Margin, expressed in pixels, between tab edges and component edge (default value 5).
+    int _margin;
+
+    // Margin, expressed in pixels, between left or top work area widget and tabs (default value 5).
+    int _margin1; // left / top margin
+
+    // Margin, expressed in pixels, between right or bottom work area widget and tabs (default value 5).
+    int _margin2; // right / bottom margin
+
+    // If tab contains a pixmap, the space, expressed in pixels, between the tab label and the pixmap (default value 3).
+    int pixmapSpacing;
+
+    // Background color of the selected tab.
+    Pixel selectedTabBackground;
+
+    // Amount of tab overlap, expressed in pixels (default value 17).
+    int _sideOffset;
+
+    string _fontName;
 
 private:
     void createWidget(Widget parent);
